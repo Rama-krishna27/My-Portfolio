@@ -73,4 +73,4 @@ tests/portfolio.spec.js      Functional/accessibility browser checks
 .github/workflows/pages.yml Manual test/build/deployment
 ```
 
-Fonts and graphical assets are local. The SVG social illustration is provided as metadata, but some social platforms require raster preview images. Automated accessibility checks supplement manual keyboard and screen-reader review.
+Fonts and graphical assets are local. A 1200 × 630 PNG social card supports sharing previews, with its original SVG retained for editing. Automated accessibility checks supplement manual keyboard and screen-reader review.

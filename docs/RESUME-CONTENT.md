@@ -12,13 +12,13 @@ Source: owner-provided `Ramakrishna_ Senior _.Net_Developer.docx`. The document 
 
 ## Work history
 
-| Employer | Role | Dates | Location |
-| --- | --- | --- | --- |
-| State of Maryland | Senior .NET Full Stack Developer | April 2023–Current | Maryland, USA |
-| Quest Diagnostics | Senior .NET Full Stack Developer | September 2021–March 2023 | Secaucus, NJ, USA |
-| BHG Financial | Full Stack .NET Developer | January 2020–August 2021 | Florida, USA |
-| TJMax | .NET Developer | September 2017–December 2019 | Massachusetts, USA |
-| Accenture | .NET Developer | July 2014–May 2017 | Hyderabad, India |
+| Employer          | Role                             | Dates                        | Location           |
+| ----------------- | -------------------------------- | ---------------------------- | ------------------ |
+| State of Maryland | Senior .NET Full Stack Developer | April 2023–Current           | Maryland, USA      |
+| Quest Diagnostics | Senior .NET Full Stack Developer | September 2021–March 2023    | Secaucus, NJ, USA  |
+| BHG Financial     | Full Stack .NET Developer        | January 2020–August 2021     | Florida, USA       |
+| TJMax             | .NET Developer                   | September 2017–December 2019 | Massachusetts, USA |
+| Accenture         | .NET Developer                   | July 2014–May 2017           | Hyderabad, India   |
 
 “TJMax” preserves the resume spelling. “Current” is displayed as “Present”; employment has not been independently verified beyond the supplied resume.
 
