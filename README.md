@@ -1,8 +1,10 @@
 # Ramakrishna Maddinapudi — Professional portfolio
 
-A responsive static portfolio for a Senior Full Stack .NET Developer. Original ivory, forest-ink, and copper design with conceptual system illustrations, resume-backed content, accessible project dialogs, domain filters, expandable experience, and locally hosted fonts.
+A responsive static portfolio for a Senior Full Stack .NET Developer. Original graphite, warm-white, and mint design with conceptual system illustrations, resume-backed content, accessible project dialogs, domain filters, expandable experience, and locally hosted fonts.
 
-Built with React, Vite, Tailwind CSS v4, and Lucide icons. No backend, API keys, analytics, external font requests, or paid services. CSS animations honor reduced-motion preferences.
+Built with React, Vite, Tailwind CSS v4, and Lucide icons. No backend, API keys, analytics, external font requests, or paid services. CSS animations honor reduced-motion preferences. A persistent motion preference, selectable architecture layers, Architecture/Delivery tabs, and offscreen/hidden-tab pausing keep the system explorer controllable. Device reduced-motion preferences always take precedence. Decorative perspective sits behind stable interactive controls.
+
+See [research and limitations](docs/DESIGN-RESEARCH.md) and [measured validation results](docs/VALIDATION.md). The latest resume was not attached in the redesign session; the newer prior summary from `feat/professional-portfolio` is provisional and needs reconciliation before publication.
 
 ## Run locally
 
@@ -38,6 +40,8 @@ The configuration uses `/usr/bin/chromium` when available, otherwise Playwright'
 
 ## Content and privacy
 
+Current content and documentation anonymize employers and clients. Earlier Git commits contain identifying content; removing it from the current tree does not remove historical disclosures. No history was rewritten. Review historical exposure separately before deciding whether a coordinated cleanup is necessary.
+
 - Edit content in `src/data.js`; see [resume analysis](docs/RESUME-CONTENT.md) for source facts and editorial decisions.
 - The owner confirmed LinkedIn only. No GitHub contact link or unlisted certifications appear.
 - Case study titles describe documented employer work, not official product names or independent personal projects.
@@ -50,7 +54,7 @@ Deployment is **manual**. There is no push trigger, so merging or pushing will n
 
 1. Review the design and merge the finished website into `main` in `Rama-krishna27/My-Portfolio`.
 2. In **Settings → Pages**, select **GitHub Actions** as the deployment source.
-3. Open **Actions → Deploy portfolio to GitHub Pages → Run workflow**, select `main`, and run it.
+3. After owner design approval and resume reconciliation, open **Actions → Deploy portfolio to GitHub Pages → Run workflow**, select `main`, tick the design/content approval checkbox, and run it.
 4. The workflow installs locked dependencies, lints, runs browser tests (including the production build), uploads `dist`, and deploys.
 5. If the `github-pages` environment requires approval, an authorized reviewer must approve the deployment job.
 6. After successful deployment, open the URL below and verify mobile navigation, fonts, project dialogs, email, and LinkedIn.
@@ -65,7 +69,10 @@ This is an expected destination, not a claim of publication. Write access is nee
 
 ```text
 src/App.jsx                 Sections and interactive components
-src/data.js                 Resume-backed content
+src/data.js                 Provisional resume-derived content
+src/SystemConsole.jsx       Architecture/Delivery interaction
+src/system-data.js          Structured capability and delivery content
+src/premium.css             Midnight/mint theme and explorer styles
 src/styles.css              Tailwind theme and responsive styling
 public/                     Original favicon and social illustration
 docs/RESUME-CONTENT.md       Resume analysis and content decisions

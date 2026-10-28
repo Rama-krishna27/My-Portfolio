@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   Activity,
   ArrowDown,
@@ -19,12 +19,15 @@ import {
   Mail,
   Menu,
   Phone,
+  Pause,
+  Play,
   ShieldCheck,
   Sparkles,
   Workflow,
   X,
 } from "lucide-react";
 import { experience, profile, projects, skills } from "./data";
+import SystemConsole from "./SystemConsole";
 
 const icons = {
   code: Code2,
@@ -83,7 +86,7 @@ function useReveal() {
   }, []);
 }
 
-function Header() {
+function Header({ paused, onToggleMotion, reducedMotion }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
   const menuRef = useRef(null);
@@ -134,6 +137,38 @@ function Header() {
         >
           rm<span>.</span>
         </a>
+        <div className="header-controls">
+          <span className="header-descriptor">ENGINEER / BUILDER</span>
+          <button
+            className="motion-toggle"
+            aria-pressed={paused}
+            onClick={onToggleMotion}
+            disabled={reducedMotion}
+            aria-label={
+              reducedMotion
+                ? "Reduced motion enabled"
+                : paused
+                  ? "Motion off: enable site motion"
+                  : "Motion on: pause site motion"
+            }
+            title={
+              reducedMotion
+                ? "Your device prefers reduced motion"
+                : paused
+                  ? "Enable motion"
+                  : "Pause motion"
+            }
+          >
+            {paused ? <Play size={14} /> : <Pause size={14} />}
+            <span>
+              {reducedMotion
+                ? "Reduced motion"
+                : paused
+                  ? "Motion off"
+                  : "Motion on"}
+            </span>
+          </button>
+        </div>
         <button
           ref={toggleRef}
           className="menu-toggle"
@@ -173,69 +208,7 @@ function Header() {
   );
 }
 
-function SystemIllustration() {
-  return (
-    <div
-      className="system-illustration"
-      aria-label="Illustration of connected frontend, .NET services, cloud, and data layers"
-      role="img"
-    >
-      <div className="orbit orbit-one" />
-      <div className="orbit orbit-two" />
-      <div className="orbit orbit-three" />
-      <span className="orbit-point point-one" />
-      <span className="orbit-point point-two" />
-      <span className="orbit-point point-three" />
-      <div className="system-caption">
-        <span className="tiny-cross">+</span> THE WAY I BUILD
-      </div>
-      <div className="system-stack">
-        <div className="system-layer layer-front">
-          <LayoutTemplate size={20} />
-          <div>
-            <small>01 / EXPERIENCE</small>
-            <strong>Thoughtful interfaces</strong>
-          </div>
-          <span className="layer-dot" />
-        </div>
-        <div className="stack-connector">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className="system-layer layer-core">
-          <Code2 size={23} />
-          <div>
-            <small>02 / ENGINEERING</small>
-            <strong>
-              Solid at the core<span>.</span>
-            </strong>
-          </div>
-          <span className="core-chip">.NET</span>
-        </div>
-        <div className="stack-connector">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className="system-layer layer-cloud">
-          <Cloud size={20} />
-          <div>
-            <small>03 / SCALE</small>
-            <strong>Cloud-ready foundations</strong>
-          </div>
-          <Database size={20} />
-        </div>
-      </div>
-      <div className="diagram-foot">
-        <span className="status-dot" /> Built to connect. Designed to last.
-      </div>
-      <span className="diagram-coordinate">RM / SYSTEMS THINKING</span>
-    </div>
-  );
-}
-
-function Hero() {
+function Hero({ paused, onToggleMotion, reducedMotion }) {
   return (
     <section
       id="home"
@@ -244,18 +217,24 @@ function Hero() {
     >
       <div className="hero-copy">
         <p className="eyebrow hero-eyebrow">
-          <span className="status-dot" /> SOFTWARE. SYSTEMS. SOLUTIONS.
+          <span className="status-dot" /> .NET FOUNDATIONS. CONNECTED THINKING.
         </p>
-        <p className="hero-intro">Hello, I’m Ramakrishna Maddinapudi.</p>
-        <h1 id="hero-heading">
-          Thoughtful engineering.
-          <br />
-          <span>Enterprise impact.</span>
+        <h1 id="hero-heading" className="hero-intro">
+          {profile.name}
         </h1>
-        <p className="hero-title">{profile.title}</p>
+        <p className="hero-tagline">
+          Connected systems.
+          <br />
+          <span>Considered engineering.</span>
+        </p>
+        <p className="hero-title">
+          <span />
+          {profile.title}
+        </p>
         <p className="hero-description">
-          I turn complex business challenges into reliable digital experiences —
-          connecting modern interfaces, resilient .NET services, and the cloud.
+          I build enterprise applications that connect thoughtful interfaces,
+          secure .NET services, and Azure integrations — with reliability
+          considered at every layer.
         </p>
         <div className="hero-actions">
           <a className="button button-dark" href="#projects">
@@ -271,7 +250,11 @@ function Hero() {
           <span>From architecture to delivery</span>
         </div>
       </div>
-      <SystemIllustration />
+      <SystemConsole
+        paused={paused}
+        onToggleMotion={onToggleMotion}
+        reducedMotion={reducedMotion}
+      />
       <a className="scroll-cue" href="#about">
         <ArrowDown size={14} /> A LITTLE MORE ABOUT ME
       </a>
@@ -311,10 +294,9 @@ function About() {
               React interfaces, and bringing them together on Azure and AWS.
             </p>
             <p>
-              Along the way, I collaborate with business teams, architects, and
-              QA to turn real requirements into dependable software. More
-              recently, that work includes bringing generative AI into
-              enterprise workflows.
+              I collaborate with business teams, architects, and QA to turn real
+              requirements into dependable software, with a focus on secure
+              integrations, accessible interfaces, and production reliability.
             </p>
           </div>
         </div>
@@ -349,7 +331,45 @@ function About() {
   );
 }
 
+function updateTechGlow(event) {
+  const bounds = event.currentTarget.getBoundingClientRect();
+  event.currentTarget.style.setProperty(
+    "--glow-x",
+    `${event.clientX - bounds.left}px`,
+  );
+  event.currentTarget.style.setProperty(
+    "--glow-y",
+    `${event.clientY - bounds.top}px`,
+  );
+}
+
 function Expertise() {
+  const railRef = useRef(null);
+  const movingStack = skills
+    .flatMap((skill) => skill.items)
+    .filter((item) =>
+      [
+        "C# / .NET 6",
+        "ASP.NET Core",
+        "Angular 6–18",
+        "React",
+        "TypeScript",
+        "Blazor",
+        "Azure Functions",
+        "Service Bus",
+        "SQL Server",
+        "Azure DevOps",
+      ].includes(item),
+    );
+  useEffect(() => {
+    const element = railRef.current;
+    if (!("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      element.dataset.visible = String(entry.isIntersecting);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
   return (
     <section
       id="expertise"
@@ -360,13 +380,40 @@ function Expertise() {
         number="02"
         eyebrow="TOOLS WITH PURPOSE"
         title={<>A connected skill set.</>}
-        description="Deep .NET roots. A broad perspective across the stack. The right tools for the problem at hand."
+        description="Capabilities across the stack. Specific implementation experience is described separately in the case studies."
       />
+      <div
+        ref={railRef}
+        className="tech-marquee tech-glow-surface"
+        data-visible="true"
+        aria-hidden="true"
+        onPointerMove={updateTechGlow}
+        onPointerDown={updateTechGlow}
+      >
+        <div className="tech-marquee-track">
+          {[0, 1].map((copy) => (
+            <div className="tech-marquee-group" key={copy}>
+              {movingStack.map((technology) => (
+                <span className="moving-tech" key={technology}>
+                  <span className="tech-signal" />
+                  {technology}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="skills-grid">
-        {skills.map((skill) => {
+        {skills.map((skill, index) => {
           const Icon = icons[skill.icon];
           return (
-            <article className="skill-card" key={skill.title} data-reveal>
+            <article
+              className="skill-card tech-glow-surface"
+              key={skill.title}
+              data-reveal
+              onPointerMove={updateTechGlow}
+              onPointerDown={updateTechGlow}
+            >
               <div className="skill-card-top">
                 <span className="icon-box">
                   <Icon size={21} strokeWidth={1.6} />
@@ -377,11 +424,16 @@ function Expertise() {
               </div>
               <h3>{skill.title}</h3>
               <p>{skill.description}</p>
-              <ul className="skill-tags">
-                {skill.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
+              <details className="skill-details" open={index < 2}>
+                <summary>
+                  Explore technologies <ChevronDown size={15} />
+                </summary>
+                <ul className="skill-tags">
+                  {skill.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </details>
             </article>
           );
         })}
@@ -477,11 +529,11 @@ function ProjectVisual({ type }) {
           <div className="ai-ring ring-outer" />
           <div className="ai-ring ring-inner" />
           <div className="ai-core">
-            <Sparkles size={30} strokeWidth={1.3} />
+            <Workflow size={30} strokeWidth={1.3} />
           </div>
-          <span className="ai-label ai-label-one">CONTEXT</span>
-          <span className="ai-label ai-label-two">RETRIEVAL</span>
-          <span className="ai-label ai-label-three">INSIGHT</span>
+          <span className="ai-label ai-label-one">EVENT</span>
+          <span className="ai-label ai-label-two">PROCESS</span>
+          <span className="ai-label ai-label-three">STORE</span>
         </div>
       )}
       {type === "healthcare" && (
@@ -571,6 +623,8 @@ function ProjectDialog({ project, onClose }) {
         <p className="dialog-period">{project.period}</p>
         <h3>The context</h3>
         <p>{project.context}</p>
+        <h3>Engineering challenge</h3>
+        <p>{project.challenge}</p>
         <h3>My contributions</h3>
         <ul>
           {project.contributions.map((item) => (
@@ -601,7 +655,7 @@ function Projects() {
   const categories = [
     "All work",
     "Enterprise",
-    "AI & Cloud",
+    "Cloud & Integration",
     "Healthcare",
     "Financial services",
   ];
@@ -678,8 +732,8 @@ function Projects() {
         ))}
       </div>
       <p className="work-note">
-        <ShieldCheck size={16} /> Professional contributions. No proprietary
-        code or client data shared.
+        <ShieldCheck size={16} /> Anonymized professional case studies. No
+        proprietary code or client data shared.
       </p>
       {selected && <ProjectDialog project={selected} onClose={closeDialog} />}
     </section>
@@ -821,16 +875,66 @@ function Contact() {
   );
 }
 
+function subscribeReducedMotion(callback) {
+  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+}
+
 export default function App() {
   useReveal();
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false,
+  );
+  const [userPaused, setUserPaused] = useState(() => {
+    try {
+      return localStorage.getItem("rm-motion") === "paused";
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    const syncVisibility = () => {
+      document.documentElement.dataset.hidden = String(document.hidden);
+    };
+    syncVisibility();
+    document.addEventListener("visibilitychange", syncVisibility);
+    return () =>
+      document.removeEventListener("visibilitychange", syncVisibility);
+  }, []);
+  useEffect(() => {
+    document.documentElement.dataset.motion =
+      userPaused || reducedMotion ? "paused" : "running";
+  }, [userPaused, reducedMotion]);
+  const paused = userPaused || reducedMotion;
+  function toggleMotion() {
+    setUserPaused((previous) => {
+      try {
+        localStorage.setItem("rm-motion", previous ? "running" : "paused");
+      } catch {
+        /* Storage may be disabled. */
+      }
+      return !previous;
+    });
+  }
   return (
-    <>
+    <div className="portfolio" data-motion={paused ? "paused" : "running"}>
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <Header />
+      <Header
+        paused={paused}
+        onToggleMotion={toggleMotion}
+        reducedMotion={reducedMotion}
+      />
       <main id="main">
-        <Hero />
+        <Hero
+          paused={paused}
+          onToggleMotion={toggleMotion}
+          reducedMotion={reducedMotion}
+        />
         <div className="domain-strip">
           <div className="container">
             <span className="domain-caption">EXPERIENCE ACROSS</span>
@@ -852,6 +956,6 @@ export default function App() {
         <Education />
         <Contact />
       </main>
-    </>
+    </div>
   );
 }

@@ -1,6 +1,12 @@
 name: Deploy portfolio to GitHub Pages
 on:
   workflow_dispatch:
+    inputs:
+      design_approved:
+        description: "Owner approved this design and verified resume-derived content"
+        type: boolean
+        required: true
+        default: false
 permissions:
   contents: read
   pages: write
@@ -10,6 +16,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   build:
+    if: inputs.design_approved
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
