@@ -1,34 +1,34 @@
-# Validation — 2026-10-28
+# Validation — 2026-10-28 refinement
 
-Environment: macOS arm64, temporary official Node.js 24.11.0 runtime, locked npm dependencies, Vite production build. Chromium 156 / Playwright. Production base `/My-Portfolio/`. No deployment performed.
+Environment: macOS arm64, official temporary Node.js 24.11.0 runtime, locked npm dependencies, Vite production build at `/My-Portfolio/`, Chromium 156 / Playwright. No deployment performed.
 
-- `npm run build`: passed.
-- `npm run lint`: passed.
-- `npm test`: 22 passed, 2 intentionally skipped (mobile-only menu test on desktop/tablet).
-- Production checks cover 320, 390, 600, 768, 1024, and 1440px: no horizontal overflow, failed assets, or JavaScript errors found.
-- Page and modal axe WCAG A/AA checks passed on desktop, tablet, and mobile.
-- Verified navigation, contacts, domain filters, all four dialogs, Escape/focus restoration, expandable experience, selected architecture layers, local pause/speed, persistent motion preference, offscreen pause, and reduced-motion static mode.
-- Separate mobile touch test successfully selected the API gateway node.
-- Inspected full-page desktop/mobile screenshots in reduced-motion mode, plus readable viewport captures. Fixed mobile motion-toggle overlap by placing it in the sticky header. Final desktop/mobile viewport review passed.
-- Checked source, public assets, docs and built text for the previously disclosed identifying names: no matches. No resume, PDF, or Word document in `dist`.
-- Original 1200×630 social PNG rendered from its local SVG and inspected.
+- Production build and lint passed.
+- Production browser suite: **28 passed, 2 intentionally skipped** (mobile-only navigation on desktop/tablet).
+- Widths 320, 390, 600, 768, 1024, and 1440px: no horizontal overflow, missing assets, or JavaScript errors found.
+- Axe WCAG A/AA checks passed for the page, case-study modal, and Delivery view on desktop, tablet, and mobile. Static/reduced motion is used for stable contrast auditing, independent of reveal transitions.
+- Verified all section anchors, contacts, project filters, all four case-study dialogs, Escape dismissal, focus restoration, experience disclosures, Architecture/Delivery tabs with arrow/Home keyboard navigation, layer selection with keyboard/mouse/mobile touch, and contextual inspector content.
+- Verified shared persistent motion pause/play, saved running preference overridden by device reduced motion, static geometry, and offscreen animation suspension. Tab visibility suspension is implemented using visibilitychange; an actual background-tab lifecycle is not covered by the automated suite.
+- Clipboard writes and accessible success feedback passed; injected clipboard failure produced the intended accessible fallback.
+- Inspected desktop, tablet, mobile and 320px full-page/viewport screenshots. Tablet/mobile use a stacked hero rather than miniature desktop content. Also inspected isolated Architecture/Delivery component captures; the sticky header is set to normal document flow for those component-only screenshots. Full-page and hero captures retain the actual sticky header.
+- Checked source, public assets, current docs and build against previously disclosed identifying names. No matches; no original resume, PDF or Word document in the build. No history was rewritten.
+- Raster 1200×630 social card rendered from the local SVG and inspected.
 
 ## Lighthouse lab measurement
 
-Lighthouse 12.8.2, headless Chromium 156, local production preview on port 4174, default mobile simulated throttling: 150ms RTT, 1638.4 Kbps throughput, 4× CPU slowdown. Single final-build run; local host results are not public-network guarantees.
+Lighthouse 12.8.2, Chromium 156 headless, local production preview on port 4174. Default mobile simulated throttling: 150ms RTT, 1638.4 Kbps throughput, 4× CPU slowdown. One final-code run, with no concurrent browser tests. These are lab results, not public-network guarantees.
 
-| Category / metric | Measured result |
+| Category / metric | Result |
 | --- | --- |
-| Performance | 96 |
+| Performance | 95 |
 | Accessibility | 100 |
 | Best practices | 100 |
 | SEO | 100 |
-| LCP | 2.3 seconds |
-| CLS | 0.01 |
+| LCP | 2.4 seconds |
+| CLS | 0 |
 | Total blocking time | 0 ms |
 
-INP requires real-user interaction data and has not been measured. TBT is not INP. Automated accessibility checks do not replace human screen-reader review. Hidden-tab pause is implemented using `visibilitychange`; automated tests verify offscreen and visitor pause, not an actual background-tab lifecycle. No public deployment or public asset verification has occurred.
+INP has not been measured; TBT is not a substitute. Automated checks do not establish full accessibility compliance or replace manual screen-reader review. No public deployment or public-network verification has occurred. Screenshots are local QA artifacts in ignored `artifacts/`.
 
-## Remaining gates
+## Remaining publication gates
 
-The latest resume was not attached. Existing prior resume-derived roles, dates, education, contacts, and case studies require reconciliation with that private source. The redesigned version needs owner approval before the manual Pages workflow is run. Historical employer disclosures remain in earlier Git commits; history was not rewritten.
+The latest private resume was not attached. The newer prior summary from the professional-portfolio branch is the provisional factual source; roles, dates, education, contacts and case studies need reconciliation with the actual latest document. The owner must approve this redesigned version before the manual Pages workflow is run. Its design/content approval checkbox defaults to false. Earlier Git commits still contain identifying content; any historical cleanup requires separate authorization.

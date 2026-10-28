@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import {
   Activity,
   ArrowDown,
@@ -19,12 +19,15 @@ import {
   Mail,
   Menu,
   Phone,
+  Pause,
+  Play,
   ShieldCheck,
   Sparkles,
   Workflow,
   X,
 } from "lucide-react";
 import { experience, profile, projects, skills } from "./data";
+import SystemConsole from "./SystemConsole";
 
 const icons = {
   code: Code2,
@@ -83,7 +86,7 @@ function useReveal() {
   }, []);
 }
 
-function Header() {
+function Header({ paused, onToggleMotion, reducedMotion }) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
   const menuRef = useRef(null);
@@ -134,6 +137,38 @@ function Header() {
         >
           rm<span>.</span>
         </a>
+        <div className="header-controls">
+          <span className="header-descriptor">ENGINEER / BUILDER</span>
+          <button
+            className="motion-toggle"
+            aria-pressed={paused}
+            onClick={onToggleMotion}
+            disabled={reducedMotion}
+            aria-label={
+              reducedMotion
+                ? "Reduced motion enabled"
+                : paused
+                  ? "Motion off: enable site motion"
+                  : "Motion on: pause site motion"
+            }
+            title={
+              reducedMotion
+                ? "Your device prefers reduced motion"
+                : paused
+                  ? "Enable motion"
+                  : "Pause motion"
+            }
+          >
+            {paused ? <Play size={14} /> : <Pause size={14} />}
+            <span>
+              {reducedMotion
+                ? "Reduced motion"
+                : paused
+                  ? "Motion off"
+                  : "Motion on"}
+            </span>
+          </button>
+        </div>
         <button
           ref={toggleRef}
           className="menu-toggle"
@@ -173,204 +208,7 @@ function Header() {
   );
 }
 
-const systemNodes = [
-  {
-    title: "Interface",
-    label: "01 / EXPERIENCE",
-    icon: LayoutTemplate,
-    detail:
-      "Angular and React interfaces connect business workflows to application services. Accessible controls and responsive layouts keep the experience usable.",
-    tech: "Angular · React · TypeScript",
-  },
-  {
-    title: "API gateway",
-    label: "02 / TRUST BOUNDARY",
-    icon: ShieldCheck,
-    detail:
-      "Authentication, authorization, and explicit API contracts protect service boundaries. Related capabilities include OAuth 2.0, JWT, and Microsoft Entra ID.",
-    tech: "REST · OAuth 2.0 · JWT",
-  },
-  {
-    title: ".NET services",
-    label: "03 / APPLICATION CORE",
-    icon: Code2,
-    detail:
-      "C# and ASP.NET Core services organize business rules with dependency injection, clear boundaries, and maintainable data access.",
-    tech: "C# · ASP.NET Core · EF Core",
-  },
-  {
-    title: "Message bus",
-    label: "04 / ASYNCHRONOUS FLOW",
-    icon: Workflow,
-    detail:
-      "An illustrative asynchronous boundary: messages decouple work, while retries and monitoring help make failures understandable. This diagram demonstrates a pattern, not a delivered project.",
-    tech: "Event-driven architecture · Asynchronous processing",
-  },
-  {
-    title: "Data & documents",
-    label: "05 / PERSISTENCE",
-    icon: Database,
-    detail:
-      "Relational workflows, data validation, query optimization, and contextual retrieval connect application behavior to durable information.",
-    tech: "SQL Server · ETL · Document retrieval",
-  },
-];
-
-function SystemIllustration() {
-  const [selected, setSelected] = useState(2);
-  const [localPause, setLocalPause] = useState(false);
-  const [speed, setSpeed] = useState("normal");
-  const ref = useRef(null);
-  useEffect(() => {
-    const element = ref.current;
-    const observer = new IntersectionObserver(([entry]) => {
-      element.dataset.visible = String(entry.isIntersecting);
-    });
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-  const node = systemNodes[selected];
-  return (
-    <div
-      ref={ref}
-      className="system-console"
-      data-visible="true"
-      data-paused={localPause}
-      data-speed={speed}
-      onPointerMove={(event) => {
-        if (
-          event.pointerType !== "mouse" ||
-          window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        )
-          return;
-        const bounds = event.currentTarget.getBoundingClientRect();
-        event.currentTarget.style.setProperty(
-          "--depth",
-          `${(event.clientX - bounds.left - bounds.width / 2) / 100}deg`,
-        );
-      }}
-      onPointerLeave={(event) =>
-        event.currentTarget.style.setProperty("--depth", "0deg")
-      }
-    >
-      <div className="console-heading">
-        <span>
-          <span className="status-dot" /> SYSTEM EXPLORER
-        </span>
-        <span>RM—01</span>
-      </div>
-      <div className="system-map">
-        <div className="system-orbit" aria-hidden="true">
-          <i />
-          <i />
-        </div>
-        <div
-          className="system-nodes"
-          role="group"
-          aria-label="Explore illustrative architecture layers"
-        >
-          {systemNodes.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <div className="node-row" key={item.title}>
-                <button
-                  className="system-node"
-                  aria-pressed={selected === index}
-                  aria-controls="node-explanation"
-                  onClick={() => setSelected(index)}
-                >
-                  <Icon size={20} />
-                  <span>
-                    <small>{item.label}</small>
-                    <strong>{item.title}</strong>
-                  </span>
-                  <span className="node-index">0{index + 1}</span>
-                </button>
-                {index < 4 && (
-                  <div className="packet-link" aria-hidden="true">
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div
-        id="node-explanation"
-        className="node-explanation"
-        aria-live="polite"
-      >
-        <p className="node-tech">{node.tech}</p>
-        <p>{node.detail}</p>
-      </div>
-      <div className="console-controls">
-        <button
-          onClick={() => setLocalPause(!localPause)}
-          aria-pressed={localPause}
-        >
-          {localPause ? "Play flow" : "Pause flow"}
-        </button>
-        <label>
-          Flow{" "}
-          <select
-            aria-label="Flow speed"
-            value={speed}
-            onChange={(event) => setSpeed(event.target.value)}
-          >
-            <option value="slow">Slow</option>
-            <option value="normal">Normal</option>
-          </select>
-        </label>
-      </div>
-      <p className="illustrative-note">
-        Illustrative architecture · Select a layer to explore.
-        <br />
-        Capability map, not an employer or production system.
-      </p>
-    </div>
-  );
-}
-
-function MotionControl() {
-  const [paused, setPaused] = useState(() => {
-    try {
-      return localStorage.getItem("rm-motion") === "paused";
-    } catch {
-      return false;
-    }
-  });
-  useEffect(() => {
-    document.documentElement.dataset.motion = paused ? "paused" : "running";
-    try {
-      localStorage.setItem("rm-motion", paused ? "paused" : "running");
-    } catch {
-      /* Storage is optional. */
-    }
-  }, [paused]);
-  useEffect(() => {
-    const sync = () => {
-      document.documentElement.dataset.hidden = String(document.hidden);
-    };
-    sync();
-    document.addEventListener("visibilitychange", sync);
-    return () => document.removeEventListener("visibilitychange", sync);
-  }, []);
-  return (
-    <button
-      className="motion-control"
-      aria-pressed={paused}
-      onClick={() => setPaused(!paused)}
-    >
-      {paused ? "Motion: paused" : "Pause motion"}
-      <span aria-hidden="true">{paused ? " ▷" : " Ⅱ"}</span>
-    </button>
-  );
-}
-
-function Hero() {
+function Hero({ paused, onToggleMotion, reducedMotion }) {
   return (
     <section
       id="home"
@@ -379,7 +217,7 @@ function Hero() {
     >
       <div className="hero-copy">
         <p className="eyebrow hero-eyebrow">
-          <span className="status-dot" /> SOFTWARE. SYSTEMS. SOLUTIONS.
+          <span className="status-dot" /> .NET FOUNDATIONS. CONNECTED THINKING.
         </p>
         <p className="hero-intro">Ramakrishna Maddinapudi</p>
         <h1 id="hero-heading">
@@ -387,10 +225,14 @@ function Hero() {
           <br />
           <span>Considered engineering.</span>
         </h1>
-        <p className="hero-title">{profile.title}</p>
+        <p className="hero-title">
+          <span />
+          {profile.title}
+        </p>
         <p className="hero-description">
-          I turn complex business challenges into reliable digital experiences —
-          connecting modern interfaces, resilient .NET services, and the cloud.
+          I build enterprise applications that connect thoughtful interfaces,
+          secure .NET services, and Azure integrations — with reliability
+          considered at every layer.
         </p>
         <div className="hero-actions">
           <a className="button button-dark" href="#projects">
@@ -406,7 +248,11 @@ function Hero() {
           <span>From architecture to delivery</span>
         </div>
       </div>
-      <SystemIllustration />
+      <SystemConsole
+        paused={paused}
+        onToggleMotion={onToggleMotion}
+        reducedMotion={reducedMotion}
+      />
       <a className="scroll-cue" href="#about">
         <ArrowDown size={14} /> A LITTLE MORE ABOUT ME
       </a>
@@ -446,10 +292,9 @@ function About() {
               React interfaces, and bringing them together on Azure and AWS.
             </p>
             <p>
-              Along the way, I collaborate with business teams, architects, and
-              QA to turn real requirements into dependable software. My
-              technical interests also include contextual retrieval and
-              AI-assisted workflows.
+              I collaborate with business teams, architects, and QA to turn real
+              requirements into dependable software, with a focus on secure
+              integrations, accessible interfaces, and production reliability.
             </p>
           </div>
         </div>
@@ -617,11 +462,11 @@ function ProjectVisual({ type }) {
           <div className="ai-ring ring-outer" />
           <div className="ai-ring ring-inner" />
           <div className="ai-core">
-            <Sparkles size={30} strokeWidth={1.3} />
+            <Workflow size={30} strokeWidth={1.3} />
           </div>
-          <span className="ai-label ai-label-one">CONTEXT</span>
-          <span className="ai-label ai-label-two">RETRIEVAL</span>
-          <span className="ai-label ai-label-three">INSIGHT</span>
+          <span className="ai-label ai-label-one">EVENT</span>
+          <span className="ai-label ai-label-two">PROCESS</span>
+          <span className="ai-label ai-label-three">STORE</span>
         </div>
       )}
       {type === "healthcare" && (
@@ -712,7 +557,7 @@ function ProjectDialog({ project, onClose }) {
         <h3>The context</h3>
         <p>{project.context}</p>
         <h3>Engineering challenge</h3>
-        <p>{project.description}</p>
+        <p>{project.challenge}</p>
         <h3>My contributions</h3>
         <ul>
           {project.contributions.map((item) => (
@@ -743,7 +588,7 @@ function Projects() {
   const categories = [
     "All work",
     "Enterprise",
-    "AI & Cloud",
+    "Cloud & Integration",
     "Healthcare",
     "Financial services",
   ];
@@ -963,17 +808,66 @@ function Contact() {
   );
 }
 
+function subscribeReducedMotion(callback) {
+  const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+}
+
 export default function App() {
   useReveal();
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false,
+  );
+  const [userPaused, setUserPaused] = useState(() => {
+    try {
+      return localStorage.getItem("rm-motion") === "paused";
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    const syncVisibility = () => {
+      document.documentElement.dataset.hidden = String(document.hidden);
+    };
+    syncVisibility();
+    document.addEventListener("visibilitychange", syncVisibility);
+    return () =>
+      document.removeEventListener("visibilitychange", syncVisibility);
+  }, []);
+  useEffect(() => {
+    document.documentElement.dataset.motion =
+      userPaused || reducedMotion ? "paused" : "running";
+  }, [userPaused, reducedMotion]);
+  const paused = userPaused || reducedMotion;
+  function toggleMotion() {
+    setUserPaused((previous) => {
+      try {
+        localStorage.setItem("rm-motion", previous ? "running" : "paused");
+      } catch {
+        /* Storage may be disabled. */
+      }
+      return !previous;
+    });
+  }
   return (
-    <>
+    <div className="portfolio" data-motion={paused ? "paused" : "running"}>
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <Header />
-      <MotionControl />
+      <Header
+        paused={paused}
+        onToggleMotion={toggleMotion}
+        reducedMotion={reducedMotion}
+      />
       <main id="main">
-        <Hero />
+        <Hero
+          paused={paused}
+          onToggleMotion={toggleMotion}
+          reducedMotion={reducedMotion}
+        />
         <div className="domain-strip">
           <div className="container">
             <span className="domain-caption">EXPERIENCE ACROSS</span>
@@ -995,6 +889,6 @@ export default function App() {
         <Education />
         <Contact />
       </main>
-    </>
+    </div>
   );
 }

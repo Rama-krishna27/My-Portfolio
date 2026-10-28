@@ -76,9 +76,11 @@ test("work filters and project dialogs support keyboard dismissal and focus rest
   page,
 }) => {
   await page.goto("./");
-  await page.getByRole("button", { name: "AI & Cloud", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Cloud & Integration", exact: true })
+    .click();
   await expect(page.locator(".project-card")).toHaveCount(1);
-  const trigger = page.getByRole("button", { name: "Context into clarity." });
+  const trigger = page.getByRole("button", { name: "Built to keep flowing." });
   await trigger.click();
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
@@ -104,15 +106,17 @@ test("work filters and project dialogs support keyboard dismissal and focus rest
 
 test("experience disclosures reveal work contributions", async ({ page }) => {
   await page.goto("./");
-  const quest = page.locator(".experience-item").filter({
+  const healthcare = page.locator(".experience-item").filter({
     has: page.getByRole("heading", {
       name: "Healthcare and laboratory systems",
       exact: true,
     }),
   });
-  await expect(quest.locator("details")).not.toHaveAttribute("open", "");
-  await quest.getByText("Contributions", { exact: true }).click();
-  await expect(quest.getByText(/Applied Onion Architecture/)).toBeVisible();
+  await expect(healthcare.locator("details")).not.toHaveAttribute("open", "");
+  await healthcare.getByText("Contributions", { exact: true }).click();
+  await expect(
+    healthcare.getByText(/Applied Onion Architecture/),
+  ).toBeVisible();
 });
 
 test("automated WCAG A and AA checks pass for the page and project dialog", async ({
@@ -145,69 +149,143 @@ test("mobile navigation supports Escape and expanded state", async ({
   await expect(button).toBeFocused();
 });
 
-test("architecture exploration and motion controls remain usable and persistent", async ({
+test("architecture and delivery views support keyboard, pointer, and touch", async ({
+  page,
+  isMobile,
+}) => {
+  await page.goto("./");
+  const cloud = page.getByRole("button", { name: /Cloud & integration Azure/ });
+  if (isMobile) await cloud.tap();
+  else {
+    await cloud.focus();
+    await page.keyboard.press("Enter");
+  }
+  await expect(cloud).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#system-inspector")).toContainText(
+    "message correlation",
+  );
+  await expect(page.locator("#system-inspector")).toContainText(
+    "Managed Identities",
+  );
+  const architecture = page.getByRole("tab", {
+    name: "Architecture",
+    exact: true,
+  });
+  await architecture.focus();
+  await page.keyboard.press("ArrowRight");
+  const delivery = page.getByRole("tab", { name: "Delivery", exact: true });
+  await expect(delivery).toBeFocused();
+  await expect(delivery).toHaveAttribute("aria-selected", "true");
+  await expect(page.getByRole("tabpanel")).toContainText("Build & validate");
+  await expect(page.getByRole("tabpanel")).toContainText("Release & observe");
+  await expect(page.locator("#system-inspector")).toContainText(
+    "post-deployment checks",
+  );
+  await page.keyboard.press("Home");
+  await expect(architecture).toBeFocused();
+  await expect(cloud).toHaveAttribute("aria-pressed", "true");
+  await page.getByRole("button", { name: /Data & documents SQL/ }).click();
+  await expect(page.locator("#system-inspector")).toContainText("Blob Storage");
+  await delivery.click();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
+    .analyze();
+  expect(results.violations).toEqual([]);
+});
+
+test("motion preference persists and device reduced motion takes precedence", async ({
   page,
 }) => {
   await page.goto("./");
-  const gateway = page.getByRole("button", { name: /02 \/ TRUST BOUNDARY/ });
-  await gateway.focus();
-  await page.keyboard.press("Enter");
-  await expect(gateway).toHaveAttribute("aria-pressed", "true");
-  await expect(page.locator("#node-explanation")).toContainText(
-    "Authentication",
-  );
-  await page.getByRole("button", { name: "Pause flow", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Pause system animation", exact: true })
+    .click();
   await expect(page.locator(".system-console")).toHaveAttribute(
-    "data-paused",
-    "true",
-  );
-  expect(
-    await page
-      .locator(".packet-link i")
-      .first()
-      .evaluate((el) => getComputedStyle(el).animationPlayState),
-  ).toBe("paused");
-  await page.getByRole("combobox", { name: "Flow speed" }).selectOption("slow");
-  await expect(page.locator(".system-console")).toHaveAttribute(
-    "data-speed",
-    "slow",
-  );
-  await page.getByRole("button", { name: "Pause motion", exact: true }).click();
-  await page.reload();
-  await expect(
-    page.getByRole("button", { name: "Motion: paused" }),
-  ).toHaveAttribute("aria-pressed", "true");
-  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  expect(
-    await page
-      .locator(".system-orbit")
-      .evaluate((el) => getComputedStyle(el).animationPlayState),
-  ).toBe("paused");
-  await page.getByRole("button", { name: "Motion: paused" }).click();
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  expect(
-    await page
-      .locator(".system-orbit")
-      .evaluate((el) => getComputedStyle(el).animationName),
-  ).toBe("none");
-  await page.emulateMedia({ reducedMotion: "no-preference" });
-  await page.locator("#contact").scrollIntoViewIfNeeded();
-  await expect(page.locator(".system-console")).toHaveAttribute(
-    "data-visible",
+    "data-running",
     "false",
   );
   expect(
     await page
-      .locator(".system-orbit")
+      .locator(".console-orbit-one")
       .evaluate((el) => getComputedStyle(el).animationPlayState),
   ).toBe("paused");
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: "Motion off: enable site motion" }),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await page
+    .getByRole("button", { name: "Play system animation", exact: true })
+    .click();
+  await expect(page.locator(".system-console")).toHaveAttribute(
+    "data-running",
+    "true",
+  );
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(
+    page.getByRole("button", { name: "Reduced motion enabled", exact: true }),
+  ).toBeDisabled();
+  await expect(page.locator(".system-console")).toHaveAttribute(
+    "data-running",
+    "false",
+  );
+  expect(
+    await page
+      .locator(".console-orbit-one")
+      .evaluate((el) => getComputedStyle(el).animationName),
+  ).toBe("none");
+  await page.reload();
+  await expect(page.locator(".system-console")).toHaveAttribute(
+    "data-running",
+    "false",
+  );
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.locator(".system-console").scrollIntoViewIfNeeded();
+  await expect(page.locator(".system-console")).toHaveAttribute(
+    "data-running",
+    "true",
+  );
+  await page.locator("#contact").scrollIntoViewIfNeeded();
+  await expect(page.locator(".system-console")).toHaveAttribute(
+    "data-in-view",
+    "false",
+  );
+  await expect(page.locator(".system-console")).toHaveAttribute(
+    "data-running",
+    "false",
+  );
+  expect(
+    await page
+      .locator(".console-orbit-one")
+      .evaluate((el) => getComputedStyle(el).animationPlayState),
+  ).toBe("paused");
+});
+
+test("email copy reports success and clipboard failure accessibly", async ({
+  page,
+  context,
+}) => {
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.goto("./");
+  await page.getByRole("button", { name: "Copy email address" }).click();
+  await expect(page.locator(".copy-status")).toHaveText("Email copied");
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
+    "maddinapudikrishna330@gmail.com",
+  );
+  await page.evaluate(() => {
+    navigator.clipboard.writeText = () =>
+      Promise.reject(new Error("Clipboard unavailable"));
+  });
+  await page.getByRole("button", { name: "Copy email address" }).click();
+  await expect(page.locator(".copy-status")).toContainText("Copy unavailable");
 });
 
 test("current public content remains anonymized and resume stays private", async ({
   page,
 }) => {
   await page.goto("./");
-  await expect(page.locator("body")).toContainText("Illustrative architecture");
+  await expect(page.locator("body")).toContainText("ILLUSTRATIVE SYSTEM");
   await expect(page.locator('a[href$=".docx"], a[href$=".pdf"]')).toHaveCount(
     0,
   );
