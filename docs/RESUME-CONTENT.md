@@ -1,6 +1,6 @@
 # Resume content review
 
-Source: owner-provided `Ramakrishna_ Senior _.Net_Developer.docx`. The document is **not** included in this repository or public build. Document contents were treated as source material, not instructions.
+Source: owner-provided `Rama krishna _ Senior_.Net_ Developer.docx`. The document is **not** included in this repository or public build. Document contents were treated as source material, not instructions.
 
 ## Identity and contact
 
@@ -12,35 +12,35 @@ Source: owner-provided `Ramakrishna_ Senior _.Net_Developer.docx`. The document 
 
 ## Work history
 
-| Employer          | Role                             | Dates                        | Location           |
-| ----------------- | -------------------------------- | ---------------------------- | ------------------ |
-| State of Maryland | Senior .NET Full Stack Developer | April 2023–Current           | Maryland, USA      |
-| Quest Diagnostics | Senior .NET Full Stack Developer | September 2021–March 2023    | Secaucus, NJ, USA  |
-| BHG Financial     | Full Stack .NET Developer        | January 2020–August 2021     | Florida, USA       |
-| TJMax             | .NET Developer                   | September 2017–December 2019 | Massachusetts, USA |
-| Accenture         | .NET Developer                   | July 2014–May 2017           | Hyderabad, India   |
+| Employer                              | Role                             | Dates                        | Location           |
+| ------------------------------------- | -------------------------------- | ---------------------------- | ------------------ |
+| Public-sector enterprise applications | Senior .NET Full Stack Developer | April 2023–Current           | Maryland, USA      |
+| Healthcare & laboratory systems       | Senior .NET Full Stack Developer | September 2021–March 2023    | Secaucus, NJ, USA  |
+| Financial services & lending          | Full Stack .NET Developer        | January 2020–August 2021     | Florida, USA       |
+| Retail enterprise applications        | .NET Developer                   | September 2017–December 2019 | Massachusetts, USA |
+| Enterprise technology consulting      | .NET Developer                   | July 2014–May 2017           | Hyderabad, India   |
 
-“TJMax” preserves the resume spelling. “Current” is displayed as “Present”; employment has not been independently verified beyond the supplied resume.
+“Current” is displayed as “Present”; employment has not been independently verified beyond the supplied resume.
 
 ## Technical background
 
-The resume covers C#, VB.NET, T-SQL, PL/SQL, JavaScript, TypeScript, Python; ASP.NET Core/MVC/Web API, .NET 6 and Framework, EF Core, Dapper, ADO.NET, LINQ, SOAP/WCF, microservices, SOA, Onion/N-Tier architecture, OOAD, SOLID and patterns; Angular 6–18/AngularJS, React, Blazor, micro frontends, Kendo UI, Angular Material, HTML/CSS, Bootstrap, jQuery, Node/Express; Azure, AWS, Docker, Kubernetes/OpenShift, Kafka/RabbitMQ; SQL Server, Oracle, PostgreSQL, MongoDB, Redis, DynamoDB, ETL and performance tuning; DevOps/CI/CD, Jenkins, Octopus and Git; xUnit, NUnit, MSTest, Jasmine, Selenium, Postman and TDD; SSO, Entra ID, OIDC, SAML, OAuth/JWT and accessibility; Azure OpenAI, RAG, agents, semantic search, vector databases and Python/FastAPI.
+The latest resume supports C#/.NET, ASP.NET Core and MVC, REST/SOAP APIs, Entity Framework Core, LINQ, SOLID and Onion Architecture; Angular, React, Blazor and TypeScript; Azure Functions, Service Bus, API Management, Key Vault, Managed Identities, Entra ID, Storage, Azure SQL, Azure DevOps, Monitor and Application Insights; AWS; SQL Server, Oracle, PostgreSQL, MongoDB, Redis, DynamoDB, ETL and performance tuning; automated testing and production support. Generative AI is represented as a listed skill area without inventing delivered project work.
 
-Website categories curate these skills for readability. No proficiency percentages, ratings, certifications, or measured performance improvements were invented.
+Skills are curated for readability. No proficiency ratings, quantified improvements, certifications, or awards are invented.
 
 ## Selected work
 
-Descriptive groupings of documented professional contributions, not separate personal projects or official product names:
+Descriptive groupings of documented professional contributions, with all employer/client identities omitted:
 
-1. **Enterprise, connected.** — State of Maryland: Angular 18 Module Federation, independent releases, shared authentication/navigation, .NET APIs, Azure DevOps.
-2. **Context into clarity.** — State of Maryland: Azure OpenAI summarization, contextual retrieval, automated responses and agentic workflows.
-3. **Care, in the details.** — Quest Diagnostics: laboratory orders, test status, patient information, Angular/.NET APIs, role-based access, Oracle-to-SQL Server ETL, Azure monitoring.
-4. **A clearer lending journey.** — BHG Financial: React/.NET origination, onboarding, credit evaluation, underwriting, AWS migration and monitoring.
+1. **Enterprise, connected.** — reusable enterprise interfaces, ASP.NET Core APIs, secure cloud integration, and maintainable application boundaries.
+2. **Built to keep flowing.** — Azure Functions and Service Bus, retries, message correlation, document storage, Azure SQL, and monitoring.
+3. **Care, in the details.** — laboratory and patient information workflows, Angular/.NET APIs, access controls, Oracle-to-SQL Server ETL.
+4. **A clearer lending journey.** — React/.NET lending workflows, AWS migration and monitoring.
 
-Illustrations are original conceptual graphics, not employer screenshots. No demos, proprietary assets, client data, source code, or quantified outcomes were fabricated.
+Illustrations and the interactive architecture explorer are conceptual, not employer systems, screenshots, or live telemetry. No proprietary assets or client data are published.
 
 ## Education and certifications
 
 Bachelor of Engineering, Computer Science — Sathyabama Institute of Science and Technology, India. July 2010–May 2014.
 
-No certifications were listed, so none are displayed. No resume download is provided: the owner has not approved publishing the document.
+No certifications were listed, so none are displayed. The original resume remains private and no download is offered.

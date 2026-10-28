@@ -46,11 +46,11 @@ test("navigation, contact links, and all resume roles are valid", async ({
     .click();
   await expect(page).toHaveURL(/#experience$/);
   for (const company of [
-    "State of Maryland",
-    "Quest Diagnostics",
-    "BHG Financial",
-    "TJMax",
-    "Accenture",
+    "Public-sector enterprise applications",
+    "Healthcare & laboratory systems",
+    "Financial services & lending",
+    "Retail enterprise applications",
+    "Enterprise technology consulting",
   ]) {
     await expect(
       page
@@ -76,16 +76,18 @@ test("work filters and project dialogs support keyboard dismissal and focus rest
   page,
 }) => {
   await page.goto("./");
-  await page.getByRole("button", { name: "AI & Cloud", exact: true }).click();
+  await page
+    .getByRole("button", { name: "Cloud & Integration", exact: true })
+    .click();
   await expect(page.locator(".project-card")).toHaveCount(1);
-  const trigger = page.getByRole("button", { name: "Context into clarity." });
+  const trigger = page.getByRole("button", { name: "Built to keep flowing." });
   await trigger.click();
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
   await expect(
     dialog.getByRole("heading", { name: "My contributions" }),
   ).toBeVisible();
-  await expect(dialog).toContainText("State of Maryland");
+  await expect(dialog).toContainText("Public-sector enterprise applications");
   await expect(
     dialog.getByRole("button", { name: "Close project details" }),
   ).toBeFocused();
@@ -104,14 +106,12 @@ test("work filters and project dialogs support keyboard dismissal and focus rest
 
 test("experience disclosures reveal work contributions", async ({ page }) => {
   await page.goto("./");
-  const quest = page
-    .locator(".experience-item")
-    .filter({
-      has: page.getByRole("heading", {
-        name: "Quest Diagnostics",
-        exact: true,
-      }),
-    });
+  const quest = page.locator(".experience-item").filter({
+    has: page.getByRole("heading", {
+      name: "Healthcare & laboratory systems",
+      exact: true,
+    }),
+  });
   await expect(quest.locator("details")).not.toHaveAttribute("open", "");
   await quest.getByText("Contributions", { exact: true }).click();
   await expect(quest.getByText(/Applied Onion Architecture/)).toBeVisible();
@@ -145,4 +145,55 @@ test("mobile navigation supports Escape and expanded state", async ({
   await page.keyboard.press("Escape");
   await expect(button).toHaveAttribute("aria-expanded", "false");
   await expect(button).toBeFocused();
+});
+
+test("system explorer layers, delivery view, and persistent motion control work", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.goto("./");
+  const explorer = page.getByRole("region", {
+    name: "Interactive illustrative system architecture",
+  });
+  await explorer.getByRole("button", { name: /Cloud & integration/ }).click();
+  await expect(explorer.locator(".console-inspector")).toContainText(
+    "workflow.orchestrate()",
+  );
+  await expect(explorer.locator(".console-inspector")).toContainText(
+    "Managed Identities",
+  );
+  await explorer.getByRole("button", { name: "Delivery", exact: true }).click();
+  await expect(explorer.getByText("Source & review")).toBeVisible();
+  await expect(explorer.getByText("release.validate()")).toBeVisible();
+  await explorer
+    .getByRole("button", { name: "Pause system animation" })
+    .click();
+  await expect(page.locator(".portfolio")).toHaveAttribute(
+    "data-motion",
+    "paused",
+  );
+  await expect(page.locator(".console-float")).toHaveCSS(
+    "animation-play-state",
+    "paused",
+  );
+  await page.reload();
+  await expect(page.locator(".portfolio")).toHaveAttribute(
+    "data-motion",
+    "paused",
+  );
+  await page.locator(".motion-toggle").click();
+  await expect(page.locator(".portfolio")).toHaveAttribute(
+    "data-motion",
+    "running",
+  );
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.locator(".portfolio")).toHaveAttribute(
+    "data-motion",
+    "paused",
+  );
+  await expect(page.locator(".motion-toggle")).toBeDisabled();
+  await expect(page.locator(".console-float")).toHaveCSS(
+    "animation-name",
+    "none",
+  );
 });

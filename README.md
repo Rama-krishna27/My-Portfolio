@@ -1,6 +1,6 @@
 # Ramakrishna Maddinapudi — Professional portfolio
 
-A responsive static portfolio for a Senior Full Stack .NET Developer. Original ivory, forest-ink, and copper design with conceptual system illustrations, resume-backed content, accessible project dialogs, domain filters, expandable experience, and locally hosted fonts.
+A responsive static portfolio for a Senior Full Stack .NET Developer. Original graphite, warm-white, and mint design with an interactive architecture explorer, conceptual system illustrations, resume-backed content, accessible project dialogs, domain filters, expandable experience, and locally hosted fonts.
 
 Built with React, Vite, Tailwind CSS v4, and Lucide icons. No backend, API keys, analytics, external font requests, or paid services. CSS animations honor reduced-motion preferences.
 
@@ -40,6 +40,8 @@ The configuration uses `/usr/bin/chromium` when available, otherwise Playwright'
 
 - Edit content in `src/data.js`; see [resume analysis](docs/RESUME-CONTENT.md) for source facts and editorial decisions.
 - The owner confirmed LinkedIn only. No GitHub contact link or unlisted certifications appear.
+- Current public content anonymizes all employers and clients. Earlier Git history is unchanged; removing historical disclosures would require a separately approved history rewrite.
+- The latest resume supersedes the original version: case studies now emphasize secure enterprise services and Azure event-driven/document integrations.
 - Case study titles describe documented employer work, not official product names or independent personal projects.
 - The original resume is not committed, bundled, or offered for download. Obtain explicit owner approval before adding a download.
 - Contact uses email and telephone links; there is no form implying a backend delivery service.
@@ -74,3 +76,11 @@ tests/portfolio.spec.js      Functional/accessibility browser checks
 ```
 
 Fonts and graphical assets are local. A 1200 × 630 PNG social card supports sharing previews, with its original SVG retained for editing. Automated accessibility checks supplement manual keyboard and screen-reader review.
+
+## Interactive system explorer
+
+The hero's right-side window illustrates frontend, .NET services, cloud integration, and data layers. Select a layer to inspect the related stack, or switch to Delivery for a conceptual release workflow. This is an illustration, not a real employer system or live operational telemetry.
+
+Decorative objects, message signals, and the ambient glow animate while the explorer is visible. Controls stay stable for accurate pointing. Mouse movement adds restrained perspective. The header and explorer provide motion controls; the preference persists when local storage is available. Device reduced-motion preferences take precedence. Animations pause when the explorer is offscreen or the tab is hidden.
+
+The requested Wix reference was inaccessible through the environment's network policy. The redesign is original and does not claim to reproduce or have inspected specific Wix examples.
