@@ -2395,3 +2395,169 @@ html[data-motion="paused"] {
   outline: 2px solid var(--accent);
   outline-offset: -3px;
 }
+
+/* Requested finishing touches; the existing palette stays intact. */
+html,
+body,
+body * {
+  cursor: pointer !important;
+}
+.hero .hero-intro {
+  font-size: clamp(48px, 4.5vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -2.3px;
+  color: var(--text-primary);
+  margin: 0 0 26px;
+}
+.hero-tagline {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 2.6vw, 36px);
+  line-height: 1.18;
+  letter-spacing: -1.2px;
+  color: var(--text-primary);
+}
+.hero-tagline > span {
+  color: var(--accent);
+}
+.tech-marquee {
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+  margin: 0 0 32px;
+  padding: 20px 0;
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 5%,
+    #000 95%,
+    transparent
+  );
+}
+.tech-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: tech-travel 38s linear infinite;
+}
+.tech-marquee-group {
+  display: flex;
+  flex-shrink: 0;
+  gap: 14px;
+  padding-right: 14px;
+}
+.moving-tech {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  font-size: 14px;
+  color: var(--text-primary);
+  background: var(--surface-raised);
+  white-space: nowrap;
+}
+.tech-signal {
+  width: 5px;
+  height: 5px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px #a7e2c933;
+}
+@keyframes tech-travel {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.tech-glow-surface {
+  position: relative;
+  isolation: isolate;
+  --glow-x: 50%;
+  --glow-y: 50%;
+}
+.tech-glow-surface::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: 8px;
+  background: radial-gradient(
+    220px circle at var(--glow-x) var(--glow-y),
+    #a7e2c926,
+    transparent 75%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.tech-glow-surface > * {
+  position: relative;
+  z-index: 1;
+}
+.tech-glow-surface:hover::before,
+.tech-glow-surface:active::before,
+.tech-glow-surface:focus-within::before {
+  opacity: 1;
+}
+.tech-marquee[data-visible="false"] .tech-marquee-track {
+  animation-play-state: paused;
+}
+@media (max-width: 900px) {
+  .hero .hero-intro {
+    font-size: 58px;
+  }
+  .hero-tagline {
+    font-size: 34px;
+  }
+}
+@media (max-width: 600px) {
+  .hero .hero-intro {
+    font-size: 40px;
+    letter-spacing: -1.5px;
+    margin-bottom: 22px;
+  }
+  .hero-tagline {
+    font-size: clamp(24px, 6.5vw, 29px);
+    letter-spacing: -0.8px;
+  }
+  .moving-tech {
+    font-size: 12px;
+    padding: 10px 14px;
+  }
+  .tech-marquee {
+    margin-bottom: 20px;
+    padding-block: 16px;
+  }
+  .tech-marquee-track {
+    animation-duration: 48s;
+  }
+}
+@media (max-width: 360px) {
+  .hero .hero-intro {
+    font-size: 34px;
+  }
+  .hero-tagline {
+    font-size: 24px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tech-marquee-track {
+    animation: none !important;
+  }
+}
+.skill-tags li,
+.moving-tech {
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.skill-tags li:hover,
+.skill-tags li:active,
+.moving-tech:hover,
+.moving-tech:active {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 18px #a7e2c92b,
+    inset 0 0 12px #a7e2c912;
+}
+.tech-marquee:active .tech-marquee-track {
+  animation-play-state: paused;
+}

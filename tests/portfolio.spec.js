@@ -15,7 +15,7 @@ test("production page loads without errors, missing assets, or horizontal overfl
   });
   await page.goto("./");
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "Connected systems.",
+    "Ramakrishna Maddinapudi",
   );
   await expect(
     page.getByText("Ramakrishna Maddinapudi", { exact: true }),

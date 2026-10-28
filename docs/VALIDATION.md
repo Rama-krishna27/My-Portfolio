@@ -13,9 +13,9 @@ Environment: macOS arm64, official temporary Node.js 24.11.0 runtime, locked npm
 - Checked source, public assets, current docs and build against previously disclosed identifying names. No matches; no original resume, PDF or Word document in the build. No history was rewritten.
 - Raster 1200×630 social card rendered from the local SVG and inspected.
 
-## Lighthouse lab measurement
+## Lighthouse lab measurement — before the finishing touches
 
-Lighthouse 12.8.2, Chromium 156 headless, local production preview on port 4174. Default mobile simulated throttling: 150ms RTT, 1638.4 Kbps throughput, 4× CPU slowdown. One final-code run, with no concurrent browser tests. These are lab results, not public-network guarantees.
+Lighthouse 12.8.2, Chromium 156 headless, local production preview on port 4174. Default mobile simulated throttling: 150ms RTT, 1638.4 Kbps throughput, 4× CPU slowdown. One run of the previous design revision, with no concurrent browser tests. The finishing touches below were not re-audited with Lighthouse. These are lab results, not public-network guarantees.
 
 | Category / metric | Result |
 | --- | --- |
@@ -32,3 +32,9 @@ INP has not been measured; TBT is not a substitute. Automated checks do not esta
 ## Remaining publication gates
 
 The latest private resume was not attached. The newer prior summary from the professional-portfolio branch is the provisional factual source; roles, dates, education, contacts and case studies need reconciliation with the actual latest document. The owner must approve this redesigned version before the manual Pages workflow is run. Its design/content approval checkbox defaults to false. Earlier Git commits still contain identifying content; any historical cleanup requires separate authorization.
+
+## Finishing touches — 2026-10-28
+
+Added a gentle looping technology strip and mint pointer/touch glow; preserved all palette values. Made the name the larger primary heading, reduced the tagline size, and applied the requested hand cursor throughout the page. The strip pauses offscreen, with the site motion control, in hidden tabs, and under reduced motion.
+
+Production build and lint passed again. Browser suite: 28 passed, 2 deliberate skips. Additional production-browser checks verified actual strip movement, site pause and reduced-motion suspension, pointer and touch glow, hand cursor, larger name than tagline, and no overflow at 320/390/768/1024/1440px. Updated desktop/mobile screenshots inspected. No deployment performed.

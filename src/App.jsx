@@ -219,12 +219,14 @@ function Hero({ paused, onToggleMotion, reducedMotion }) {
         <p className="eyebrow hero-eyebrow">
           <span className="status-dot" /> .NET FOUNDATIONS. CONNECTED THINKING.
         </p>
-        <p className="hero-intro">Ramakrishna Maddinapudi</p>
-        <h1 id="hero-heading">
+        <h1 id="hero-heading" className="hero-intro">
+          {profile.name}
+        </h1>
+        <p className="hero-tagline">
           Connected systems.
           <br />
           <span>Considered engineering.</span>
-        </h1>
+        </p>
         <p className="hero-title">
           <span />
           {profile.title}
@@ -329,7 +331,45 @@ function About() {
   );
 }
 
+function updateTechGlow(event) {
+  const bounds = event.currentTarget.getBoundingClientRect();
+  event.currentTarget.style.setProperty(
+    "--glow-x",
+    `${event.clientX - bounds.left}px`,
+  );
+  event.currentTarget.style.setProperty(
+    "--glow-y",
+    `${event.clientY - bounds.top}px`,
+  );
+}
+
 function Expertise() {
+  const railRef = useRef(null);
+  const movingStack = skills
+    .flatMap((skill) => skill.items)
+    .filter((item) =>
+      [
+        "C# / .NET 6",
+        "ASP.NET Core",
+        "Angular 6–18",
+        "React",
+        "TypeScript",
+        "Blazor",
+        "Azure Functions",
+        "Service Bus",
+        "SQL Server",
+        "Azure DevOps",
+      ].includes(item),
+    );
+  useEffect(() => {
+    const element = railRef.current;
+    if (!("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      element.dataset.visible = String(entry.isIntersecting);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
   return (
     <section
       id="expertise"
@@ -342,11 +382,38 @@ function Expertise() {
         title={<>A connected skill set.</>}
         description="Capabilities across the stack. Specific implementation experience is described separately in the case studies."
       />
+      <div
+        ref={railRef}
+        className="tech-marquee tech-glow-surface"
+        data-visible="true"
+        aria-hidden="true"
+        onPointerMove={updateTechGlow}
+        onPointerDown={updateTechGlow}
+      >
+        <div className="tech-marquee-track">
+          {[0, 1].map((copy) => (
+            <div className="tech-marquee-group" key={copy}>
+              {movingStack.map((technology) => (
+                <span className="moving-tech" key={technology}>
+                  <span className="tech-signal" />
+                  {technology}
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
       <div className="skills-grid">
         {skills.map((skill, index) => {
           const Icon = icons[skill.icon];
           return (
-            <article className="skill-card" key={skill.title} data-reveal>
+            <article
+              className="skill-card tech-glow-surface"
+              key={skill.title}
+              data-reveal
+              onPointerMove={updateTechGlow}
+              onPointerDown={updateTechGlow}
+            >
               <div className="skill-card-top">
                 <span className="icon-box">
                   <Icon size={21} strokeWidth={1.6} />
