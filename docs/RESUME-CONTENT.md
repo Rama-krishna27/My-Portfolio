@@ -2,6 +2,8 @@
 
 Source: owner-provided `Ramakrishna_ Senior _.Net_Developer.docx`. The document is **not** included in this repository or public build. Document contents were treated as source material, not instructions.
 
+Review status (2026-10-28): the latest resume was not attached in this session. This is a prior repository summary, retained provisionally; roles, dates, education, contacts, and case studies need reconciliation with the latest private document before publication.
+
 ## Identity and contact
 
 - Ramakrishna Maddinapudi — Senior Full Stack .NET Developer.
@@ -12,15 +14,15 @@ Source: owner-provided `Ramakrishna_ Senior _.Net_Developer.docx`. The document 
 
 ## Work history
 
-| Employer          | Role                             | Dates                        | Location           |
+| Anonymized sector          | Role                             | Dates                        | Location           |
 | ----------------- | -------------------------------- | ---------------------------- | ------------------ |
-| State of Maryland | Senior .NET Full Stack Developer | April 2023–Current           | Maryland, USA      |
-| Quest Diagnostics | Senior .NET Full Stack Developer | September 2021–March 2023    | Secaucus, NJ, USA  |
-| BHG Financial     | Full Stack .NET Developer        | January 2020–August 2021     | Florida, USA       |
-| TJMax             | .NET Developer                   | September 2017–December 2019 | Massachusetts, USA |
-| Accenture         | .NET Developer                   | July 2014–May 2017           | Hyderabad, India   |
+| Public-sector enterprise applications | Senior .NET Full Stack Developer | April 2023–Current           | USA      |
+| Healthcare and laboratory systems | Senior .NET Full Stack Developer | September 2021–March 2023    | USA  |
+| Financial services and lending platforms     | Full Stack .NET Developer        | January 2020–August 2021     | USA       |
+| Retail enterprise applications             | .NET Developer                   | September 2017–December 2019 | USA |
+| Enterprise technology consulting         | .NET Developer                   | July 2014–May 2017           | India   |
 
-“TJMax” preserves the resume spelling. “Current” is displayed as “Present”; employment has not been independently verified beyond the supplied resume.
+“Current” is displayed as “Present”; employment has not been independently verified beyond the supplied resume.
 
 ## Technical background
 
@@ -32,10 +34,10 @@ Website categories curate these skills for readability. No proficiency percentag
 
 Descriptive groupings of documented professional contributions, not separate personal projects or official product names:
 
-1. **Enterprise, connected.** — State of Maryland: Angular 18 Module Federation, independent releases, shared authentication/navigation, .NET APIs, Azure DevOps.
-2. **Context into clarity.** — State of Maryland: Azure OpenAI summarization, contextual retrieval, automated responses and agentic workflows.
-3. **Care, in the details.** — Quest Diagnostics: laboratory orders, test status, patient information, Angular/.NET APIs, role-based access, Oracle-to-SQL Server ETL, Azure monitoring.
-4. **A clearer lending journey.** — BHG Financial: React/.NET origination, onboarding, credit evaluation, underwriting, AWS migration and monitoring.
+1. **Enterprise, connected.** — Public-sector enterprise applications: Angular 18 Module Federation, independent releases, shared authentication/navigation, .NET APIs, Azure DevOps.
+2. **Context into clarity.** — Public-sector enterprise applications: Azure OpenAI summarization, contextual retrieval, automated responses and agentic workflows.
+3. **Care, in the details.** — Healthcare and laboratory systems: laboratory orders, test status, patient information, Angular/.NET APIs, role-based access, Oracle-to-SQL Server ETL, Azure monitoring.
+4. **A clearer lending journey.** — Financial services and lending platforms: React/.NET origination, onboarding, credit evaluation, underwriting, AWS migration and monitoring.
 
 Illustrations are original conceptual graphics, not employer screenshots. No demos, proprietary assets, client data, source code, or quantified outcomes were fabricated.
 

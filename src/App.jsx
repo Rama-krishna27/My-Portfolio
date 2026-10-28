@@ -173,65 +173,200 @@ function Header() {
   );
 }
 
+const systemNodes = [
+  {
+    title: "Interface",
+    label: "01 / EXPERIENCE",
+    icon: LayoutTemplate,
+    detail:
+      "Angular and React interfaces connect business workflows to application services. Accessible controls and responsive layouts keep the experience usable.",
+    tech: "Angular · React · TypeScript",
+  },
+  {
+    title: "API gateway",
+    label: "02 / TRUST BOUNDARY",
+    icon: ShieldCheck,
+    detail:
+      "Authentication, authorization, and explicit API contracts protect service boundaries. Related capabilities include OAuth 2.0, JWT, and Microsoft Entra ID.",
+    tech: "REST · OAuth 2.0 · JWT",
+  },
+  {
+    title: ".NET services",
+    label: "03 / APPLICATION CORE",
+    icon: Code2,
+    detail:
+      "C# and ASP.NET Core services organize business rules with dependency injection, clear boundaries, and maintainable data access.",
+    tech: "C# · ASP.NET Core · EF Core",
+  },
+  {
+    title: "Message bus",
+    label: "04 / ASYNCHRONOUS FLOW",
+    icon: Workflow,
+    detail:
+      "An illustrative asynchronous boundary: messages decouple work, while retries and monitoring help make failures understandable. This diagram demonstrates a pattern, not a delivered project.",
+    tech: "Event-driven architecture · Asynchronous processing",
+  },
+  {
+    title: "Data & documents",
+    label: "05 / PERSISTENCE",
+    icon: Database,
+    detail:
+      "Relational workflows, data validation, query optimization, and contextual retrieval connect application behavior to durable information.",
+    tech: "SQL Server · ETL · Document retrieval",
+  },
+];
+
 function SystemIllustration() {
+  const [selected, setSelected] = useState(2);
+  const [localPause, setLocalPause] = useState(false);
+  const [speed, setSpeed] = useState("normal");
+  const ref = useRef(null);
+  useEffect(() => {
+    const element = ref.current;
+    const observer = new IntersectionObserver(([entry]) => {
+      element.dataset.visible = String(entry.isIntersecting);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+  const node = systemNodes[selected];
   return (
     <div
-      className="system-illustration"
-      aria-label="Illustration of connected frontend, .NET services, cloud, and data layers"
-      role="img"
+      ref={ref}
+      className="system-console"
+      data-visible="true"
+      data-paused={localPause}
+      data-speed={speed}
+      onPointerMove={(event) => {
+        if (
+          event.pointerType !== "mouse" ||
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        )
+          return;
+        const bounds = event.currentTarget.getBoundingClientRect();
+        event.currentTarget.style.setProperty(
+          "--depth",
+          `${(event.clientX - bounds.left - bounds.width / 2) / 100}deg`,
+        );
+      }}
+      onPointerLeave={(event) =>
+        event.currentTarget.style.setProperty("--depth", "0deg")
+      }
     >
-      <div className="orbit orbit-one" />
-      <div className="orbit orbit-two" />
-      <div className="orbit orbit-three" />
-      <span className="orbit-point point-one" />
-      <span className="orbit-point point-two" />
-      <span className="orbit-point point-three" />
-      <div className="system-caption">
-        <span className="tiny-cross">+</span> THE WAY I BUILD
+      <div className="console-heading">
+        <span>
+          <span className="status-dot" /> SYSTEM EXPLORER
+        </span>
+        <span>RM—01</span>
       </div>
-      <div className="system-stack">
-        <div className="system-layer layer-front">
-          <LayoutTemplate size={20} />
-          <div>
-            <small>01 / EXPERIENCE</small>
-            <strong>Thoughtful interfaces</strong>
-          </div>
-          <span className="layer-dot" />
+      <div className="system-map">
+        <div className="system-orbit" aria-hidden="true">
+          <i />
+          <i />
         </div>
-        <div className="stack-connector">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className="system-layer layer-core">
-          <Code2 size={23} />
-          <div>
-            <small>02 / ENGINEERING</small>
-            <strong>
-              Solid at the core<span>.</span>
-            </strong>
-          </div>
-          <span className="core-chip">.NET</span>
-        </div>
-        <div className="stack-connector">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className="system-layer layer-cloud">
-          <Cloud size={20} />
-          <div>
-            <small>03 / SCALE</small>
-            <strong>Cloud-ready foundations</strong>
-          </div>
-          <Database size={20} />
+        <div
+          className="system-nodes"
+          role="group"
+          aria-label="Explore illustrative architecture layers"
+        >
+          {systemNodes.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <div className="node-row" key={item.title}>
+                <button
+                  className="system-node"
+                  aria-pressed={selected === index}
+                  aria-controls="node-explanation"
+                  onClick={() => setSelected(index)}
+                >
+                  <Icon size={20} />
+                  <span>
+                    <small>{item.label}</small>
+                    <strong>{item.title}</strong>
+                  </span>
+                  <span className="node-index">0{index + 1}</span>
+                </button>
+                {index < 4 && (
+                  <div className="packet-link" aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
-      <div className="diagram-foot">
-        <span className="status-dot" /> Built to connect. Designed to last.
+      <div
+        id="node-explanation"
+        className="node-explanation"
+        aria-live="polite"
+      >
+        <p className="node-tech">{node.tech}</p>
+        <p>{node.detail}</p>
       </div>
-      <span className="diagram-coordinate">RM / SYSTEMS THINKING</span>
+      <div className="console-controls">
+        <button
+          onClick={() => setLocalPause(!localPause)}
+          aria-pressed={localPause}
+        >
+          {localPause ? "Play flow" : "Pause flow"}
+        </button>
+        <label>
+          Flow{" "}
+          <select
+            aria-label="Flow speed"
+            value={speed}
+            onChange={(event) => setSpeed(event.target.value)}
+          >
+            <option value="slow">Slow</option>
+            <option value="normal">Normal</option>
+          </select>
+        </label>
+      </div>
+      <p className="illustrative-note">
+        Illustrative architecture · Select a layer to explore.
+        <br />
+        Capability map, not an employer or production system.
+      </p>
     </div>
+  );
+}
+
+function MotionControl() {
+  const [paused, setPaused] = useState(() => {
+    try {
+      return localStorage.getItem("rm-motion") === "paused";
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    document.documentElement.dataset.motion = paused ? "paused" : "running";
+    try {
+      localStorage.setItem("rm-motion", paused ? "paused" : "running");
+    } catch {
+      /* Storage is optional. */
+    }
+  }, [paused]);
+  useEffect(() => {
+    const sync = () => {
+      document.documentElement.dataset.hidden = String(document.hidden);
+    };
+    sync();
+    document.addEventListener("visibilitychange", sync);
+    return () => document.removeEventListener("visibilitychange", sync);
+  }, []);
+  return (
+    <button
+      className="motion-control"
+      aria-pressed={paused}
+      onClick={() => setPaused(!paused)}
+    >
+      {paused ? "Motion: paused" : "Pause motion"}
+      <span aria-hidden="true">{paused ? " ▷" : " Ⅱ"}</span>
+    </button>
   );
 }
 
@@ -246,11 +381,11 @@ function Hero() {
         <p className="eyebrow hero-eyebrow">
           <span className="status-dot" /> SOFTWARE. SYSTEMS. SOLUTIONS.
         </p>
-        <p className="hero-intro">Hello, I’m Ramakrishna Maddinapudi.</p>
+        <p className="hero-intro">Ramakrishna Maddinapudi</p>
         <h1 id="hero-heading">
-          Thoughtful engineering.
+          Connected systems.
           <br />
-          <span>Enterprise impact.</span>
+          <span>Considered engineering.</span>
         </h1>
         <p className="hero-title">{profile.title}</p>
         <p className="hero-description">
@@ -312,9 +447,9 @@ function About() {
             </p>
             <p>
               Along the way, I collaborate with business teams, architects, and
-              QA to turn real requirements into dependable software. More
-              recently, that work includes bringing generative AI into
-              enterprise workflows.
+              QA to turn real requirements into dependable software. My
+              technical interests also include contextual retrieval and
+              AI-assisted workflows.
             </p>
           </div>
         </div>
@@ -360,10 +495,10 @@ function Expertise() {
         number="02"
         eyebrow="TOOLS WITH PURPOSE"
         title={<>A connected skill set.</>}
-        description="Deep .NET roots. A broad perspective across the stack. The right tools for the problem at hand."
+        description="Capabilities across the stack. Specific implementation experience is described separately in the case studies."
       />
       <div className="skills-grid">
-        {skills.map((skill) => {
+        {skills.map((skill, index) => {
           const Icon = icons[skill.icon];
           return (
             <article className="skill-card" key={skill.title} data-reveal>
@@ -377,11 +512,16 @@ function Expertise() {
               </div>
               <h3>{skill.title}</h3>
               <p>{skill.description}</p>
-              <ul className="skill-tags">
-                {skill.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
+              <details className="skill-details" open={index < 2}>
+                <summary>
+                  Explore technologies <ChevronDown size={15} />
+                </summary>
+                <ul className="skill-tags">
+                  {skill.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </details>
             </article>
           );
         })}
@@ -571,6 +711,8 @@ function ProjectDialog({ project, onClose }) {
         <p className="dialog-period">{project.period}</p>
         <h3>The context</h3>
         <p>{project.context}</p>
+        <h3>Engineering challenge</h3>
+        <p>{project.description}</p>
         <h3>My contributions</h3>
         <ul>
           {project.contributions.map((item) => (
@@ -678,8 +820,8 @@ function Projects() {
         ))}
       </div>
       <p className="work-note">
-        <ShieldCheck size={16} /> Professional contributions. No proprietary
-        code or client data shared.
+        <ShieldCheck size={16} /> Anonymized professional case studies. No
+        proprietary code or client data shared.
       </p>
       {selected && <ProjectDialog project={selected} onClose={closeDialog} />}
     </section>
@@ -829,6 +971,7 @@ export default function App() {
         Skip to content
       </a>
       <Header />
+      <MotionControl />
       <main id="main">
         <Hero />
         <div className="domain-strip">

@@ -10,8 +10,8 @@ export const profile = {
 
 export const experience = [
   {
-    company: "State of Maryland",
-    location: "Maryland, USA",
+    company: "Public-sector enterprise applications",
+    location: "USA",
     role: "Senior .NET Full Stack Developer",
     start: "Apr 2023",
     end: "Present",
@@ -27,8 +27,8 @@ export const experience = [
     tags: [".NET 6", "Angular 18", "Azure OpenAI", "OpenShift"],
   },
   {
-    company: "Quest Diagnostics",
-    location: "Secaucus, NJ, USA",
+    company: "Healthcare and laboratory systems",
+    location: "USA",
     role: "Senior .NET Full Stack Developer",
     start: "Sep 2021",
     end: "Mar 2023",
@@ -44,8 +44,8 @@ export const experience = [
     tags: ["ASP.NET Core", "Angular 14", "SQL Server", "Azure"],
   },
   {
-    company: "BHG Financial",
-    location: "Florida, USA",
+    company: "Financial services and lending platforms",
+    location: "USA",
     role: "Full Stack .NET Developer",
     start: "Jan 2020",
     end: "Aug 2021",
@@ -60,8 +60,8 @@ export const experience = [
     tags: ["React", "ASP.NET MVC", "AWS", "MongoDB"],
   },
   {
-    company: "TJMax",
-    location: "Massachusetts, USA",
+    company: "Retail enterprise applications",
+    location: "USA",
     role: ".NET Developer",
     start: "Sep 2017",
     end: "Dec 2019",
@@ -76,8 +76,8 @@ export const experience = [
     tags: ["ASP.NET Core", "Angular", "Azure SQL", "SSRS"],
   },
   {
-    company: "Accenture",
-    location: "Hyderabad, India",
+    company: "Enterprise technology consulting",
+    location: "India",
     role: ".NET Developer",
     start: "Jul 2014",
     end: "May 2017",
@@ -201,7 +201,7 @@ export const projects = [
   {
     id: "enterprise",
     category: "Enterprise",
-    company: "State of Maryland",
+    company: "Public-sector enterprise applications",
     period: "Apr 2023 – Present",
     title: "Enterprise, connected.",
     subtitle: "Modular applications for complex government workflows",
@@ -224,7 +224,7 @@ export const projects = [
   {
     id: "intelligence",
     category: "AI & Cloud",
-    company: "State of Maryland",
+    company: "Public-sector enterprise applications",
     period: "Apr 2023 – Present",
     title: "Context into clarity.",
     subtitle: "Generative AI within enterprise workflows",
@@ -247,7 +247,7 @@ export const projects = [
   {
     id: "healthcare",
     category: "Healthcare",
-    company: "Quest Diagnostics",
+    company: "Healthcare and laboratory systems",
     period: "Sep 2021 – Mar 2023",
     title: "Care, in the details.",
     subtitle: "Connected laboratory and patient workflows",
@@ -270,7 +270,7 @@ export const projects = [
   {
     id: "lending",
     category: "Financial services",
-    company: "BHG Financial",
+    company: "Financial services and lending platforms",
     period: "Jan 2020 – Aug 2021",
     title: "A clearer lending journey.",
     subtitle: "Financial applications from onboarding to underwriting",

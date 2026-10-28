@@ -1,8 +1,10 @@
 # Ramakrishna Maddinapudi — Professional portfolio
 
-A responsive static portfolio for a Senior Full Stack .NET Developer. Original ivory, forest-ink, and copper design with conceptual system illustrations, resume-backed content, accessible project dialogs, domain filters, expandable experience, and locally hosted fonts.
+A responsive static portfolio for a Senior Full Stack .NET Developer. Original graphite, warm-white, and chartreuse design with conceptual system illustrations, resume-backed content, accessible project dialogs, domain filters, expandable experience, and locally hosted fonts.
 
-Built with React, Vite, Tailwind CSS v4, and Lucide icons. No backend, API keys, analytics, external font requests, or paid services. CSS animations honor reduced-motion preferences.
+Built with React, Vite, Tailwind CSS v4, and Lucide icons. No backend, API keys, analytics, external font requests, or paid services. CSS animations honor reduced-motion preferences. A persistent motion toggle, local flow controls, selectable architecture layers, and offscreen/hidden-tab pausing keep motion controllable.
+
+See [research and limitations](docs/DESIGN-RESEARCH.md) and [measured validation results](docs/VALIDATION.md). The latest resume was not attached in the redesign session; existing resume-derived content is provisional and needs reconciliation before publication.
 
 ## Run locally
 
@@ -37,6 +39,8 @@ Tests build and serve the production site automatically. They check desktop, tab
 The configuration uses `/usr/bin/chromium` when available, otherwise Playwright's installed Chromium. Set `CHROMIUM_PATH` to use another system Chromium binary. Failure traces are retained in ignored `test-results/`.
 
 ## Content and privacy
+
+Current content and documentation anonymize employers and clients. Earlier Git commits contain identifying content; removing it from the current tree does not remove historical disclosures. No history was rewritten. Review historical exposure separately before deciding whether a coordinated cleanup is necessary.
 
 - Edit content in `src/data.js`; see [resume analysis](docs/RESUME-CONTENT.md) for source facts and editorial decisions.
 - The owner confirmed LinkedIn only. No GitHub contact link or unlisted certifications appear.
