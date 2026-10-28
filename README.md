@@ -48,22 +48,19 @@ Current content and documentation anonymize employers and clients. Earlier Git c
 - The original resume is not committed, bundled, or offered for download. Obtain explicit owner approval before adding a download.
 - Contact uses email and telephone links; there is no form implying a backend delivery service.
 
-## GitHub Pages deployment — after design approval
+## GitHub Pages deployment
 
-Deployment is **manual**. There is no push trigger, so merging or pushing will not automatically publish the portfolio.
+The approved site builds and deploys automatically when changes reach `main`. Pull requests run the same build, lint, artifact, and browser checks without deploying. A manual **Run workflow** fallback remains available, with no checkbox or inputs that silently skip the run.
 
-1. Review the design and merge the finished website into `main` in `Rama-krishna27/My-Portfolio`.
-2. In **Settings → Pages**, select **GitHub Actions** as the deployment source.
-3. After owner design approval and resume reconciliation, open **Actions → Deploy portfolio to GitHub Pages → Run workflow**, select `main`, tick the design/content approval checkbox, and run it.
-4. The workflow installs locked dependencies, lints, runs browser tests (including the production build), uploads `dist`, and deploys.
-5. If the `github-pages` environment requires approval, an authorized reviewer must approve the deployment job.
-6. After successful deployment, open the URL below and verify mobile navigation, fonts, project dialogs, email, and LinkedIn.
+1. In **Settings → Pages**, select **GitHub Actions** as the source. Publishing the repository root serves uncompiled React files and produces a blank page.
+2. Merge a reviewed change into `main`, or open **Actions → Deploy portfolio to GitHub Pages → Run workflow**, select `main`, and run it.
+3. The workflow installs locked dependencies, lints, builds Vite, checks compiled asset paths, tests the production page, and uploads only `dist`.
+4. The deploy job publishes that artifact and verifies the public HTML and assets, allowing time for propagation.
+5. If the `github-pages` environment requires approval, approve that deployment job.
 
-Expected public URL: **https://Rama-krishna27.github.io/My-Portfolio/**
+Expected public URL: **https://Rama-krishna27.github.io/My-Portfolio/**. A successful deployment and public-site verification are required before calling it live.
 
-This is an expected destination, not a claim of publication. Write access is needed to push/create a PR; admin access may be needed for Pages settings. The workflow requests `pages: write` and `id-token: write`. Organization policies may require Actions approval. Pages requires no paid hosting for public repositories.
-
-`vite.config.js` sets `base: '/My-Portfolio/'`. A repository rename or custom domain requires updating the base and canonical/Open Graph URLs in `index.html`. Section links need no client-router fallback.
+The workflow's publishing permissions are limited to the deploy job. No personal tokens or extra secrets are required. `vite.config.js` sets `base: '/My-Portfolio/'`; the verification script rejects raw source HTML or missing compiled JavaScript. For a repository rename or custom domain, update the Vite base, verification base, and canonical/social metadata together.
 
 ## Structure
 
@@ -77,7 +74,8 @@ src/styles.css              Tailwind theme and responsive styling
 public/                     Original favicon and social illustration
 docs/RESUME-CONTENT.md       Resume analysis and content decisions
 tests/portfolio.spec.js      Functional/accessibility browser checks
-.github/workflows/pages.yml Manual test/build/deployment
+.github/workflows/pages.yml CI, Pages deployment, and public artifact verification
+scripts/verify-pages.mjs    Reject raw source and broken compiled asset paths
 ```
 
 Fonts and graphical assets are local. A 1200 × 630 PNG social card supports sharing previews, with its original SVG retained for editing. Automated accessibility checks supplement manual keyboard and screen-reader review.

@@ -1,46 +1,86 @@
 name: Deploy portfolio to GitHub Pages
+
 on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
-    inputs:
-      design_approved:
-        description: "Owner approved this design and verified resume-derived content"
-        type: boolean
-        required: true
-        default: false
+
 permissions:
   contents: read
-  pages: write
-  id-token: write
+
 concurrency:
-  group: pages
+  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
   cancel-in-progress: false
+
 jobs:
   build:
-    if: inputs.design_approved
+    name: Build and validate portfolio
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
-      - run: npm ci
-      - run: npm run lint
-      - run: npx playwright install --with-deps chromium
-      - run: npm test
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Build Vite production site
+        run: npm run build
+      - name: Install Chromium for browser checks
+        run: npx playwright install --with-deps chromium
+      - name: Test production website
+        run: npm test
         env:
           CI: "true"
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - name: Verify compiled Pages artifact
+        run: node scripts/verify-pages.mjs dist
+      - name: Upload browser failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-failure-diagnostics
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+      - name: Upload compiled website
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
         with:
           path: dist
+
   deploy:
+    name: Publish verified Pages artifact
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
     steps:
-      - name: Deploy
+      - name: Check out verification script
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Deploy compiled website
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify published HTML and assets
+        run: node scripts/verify-pages.mjs "$PAGES_URL"
+        env:
+          PAGES_URL: ${{ steps.deployment.outputs.page_url }}
